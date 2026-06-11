@@ -19,32 +19,52 @@ body {
   border-radius: 24px;
   box-shadow: 0 20px 60px rgba(0,0,0,0.3);
   display: flex; flex-direction: column;
-  height: 740px; overflow: hidden;
+  height: 780px; overflow: hidden;
   position: relative;
 }
 #header {
-  padding: 16px 20px;
+  padding: 12px 16px;
   background: linear-gradient(135deg, #1e3a8a 0%, #1d4ed8 100%);
-  display: flex; align-items: center; gap: 12px;
+  display: flex; align-items: center; gap: 10px;
   flex-shrink: 0;
 }
 #logo {
-  width: 44px; height: 44px;
+  width: 40px; height: 40px;
   background: rgba(255,255,255,0.15);
   border-radius: 12px;
   display: flex; align-items: center; justify-content: center;
-  font-size: 22px; flex-shrink: 0;
+  font-size: 20px; flex-shrink: 0;
 }
 #header-text { flex: 1; }
-#header-title { font-size: 15px; font-weight: 700; color: #fff; }
-#header-sub { font-size: 11px; color: rgba(255,255,255,0.7); margin-top: 2px; }
+#header-title { font-size: 14px; font-weight: 700; color: #fff; }
+#header-sub { font-size: 10px; color: rgba(255,255,255,0.7); margin-top: 1px; }
 #online-badge {
   display: flex; align-items: center; gap: 5px;
   background: rgba(255,255,255,0.15);
-  border-radius: 20px; padding: 4px 10px;
+  border-radius: 20px; padding: 4px 8px;
 }
 #online-dot { width: 7px; height: 7px; background: #4ade80; border-radius: 50%; box-shadow: 0 0 6px #4ade80; }
-#online-label { font-size: 11px; color: rgba(255,255,255,0.85); }
+#online-label { font-size: 10px; color: rgba(255,255,255,0.85); }
+
+/* 언어 선택 탭 */
+#lang-tabs {
+  display: flex; gap: 0;
+  background: #1e3a8a;
+  border-bottom: 1px solid rgba(255,255,255,0.15);
+  overflow-x: auto; flex-shrink: 0;
+  padding: 0 8px;
+}
+#lang-tabs::-webkit-scrollbar { height: 0; }
+.lang-tab {
+  padding: 7px 12px; font-size: 11px; font-weight: 600;
+  color: rgba(255,255,255,0.6); cursor: pointer; white-space: nowrap;
+  border-bottom: 2px solid transparent;
+  transition: all 0.15s; flex-shrink: 0;
+}
+.lang-tab:hover { color: #fff; }
+.lang-tab.active { color: #fff; border-bottom-color: #4ade80; }
+
+/* 카테고리 탭 */
 #cat-tabs {
   display: flex; gap: 0;
   border-bottom: 1px solid #e2e8f0;
@@ -53,16 +73,18 @@ body {
 }
 #cat-tabs::-webkit-scrollbar { height: 0; }
 .cat-tab {
-  padding: 9px 14px; font-size: 12px; font-weight: 500;
+  padding: 8px 12px; font-size: 11px; font-weight: 500;
   color: #64748b; cursor: pointer; white-space: nowrap;
   border-bottom: 2px solid transparent;
   transition: all 0.15s; flex-shrink: 0;
 }
 .cat-tab:hover { color: #1d4ed8; background: #eff6ff; }
 .cat-tab.active { color: #1d4ed8; border-bottom-color: #1d4ed8; background: #fff; }
+
+/* 메시지 영역 */
 #messages {
   flex: 1; overflow-y: auto;
-  padding: 16px; display: flex; flex-direction: column; gap: 12px;
+  padding: 14px; display: flex; flex-direction: column; gap: 12px;
   background: #f8fafc;
 }
 #messages::-webkit-scrollbar { width: 4px; }
@@ -70,15 +92,15 @@ body {
 .msg { display: flex; gap: 8px; align-items: flex-end; }
 .msg.user { flex-direction: row-reverse; }
 .avatar {
-  width: 30px; height: 30px; border-radius: 50%;
+  width: 28px; height: 28px; border-radius: 50%;
   display: flex; align-items: center; justify-content: center;
-  font-size: 14px; flex-shrink: 0;
+  font-size: 13px; flex-shrink: 0;
 }
 .bot-avatar { background: #dbeafe; }
 .user-avatar { background: #e0e7ff; }
 .bubble {
   max-width: 80%; padding: 10px 14px;
-  font-size: 13.5px; line-height: 1.7;
+  font-size: 13px; line-height: 1.7;
   white-space: pre-wrap; word-break: keep-all;
 }
 .msg.bot .bubble {
@@ -91,23 +113,61 @@ body {
   background: linear-gradient(135deg, #1e40af, #1d4ed8);
   color: #fff; border-radius: 16px 4px 16px 16px;
 }
+
+/* 별점 팝업 */
+#rating-popup {
+  display: none;
+  position: absolute;
+  bottom: 130px; left: 50%; transform: translateX(-50%);
+  background: #fff;
+  border: 1px solid #e2e8f0;
+  border-radius: 16px;
+  padding: 16px 20px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.15);
+  z-index: 20;
+  width: 280px;
+  text-align: center;
+}
+#rating-popup.show { display: block; animation: popIn 0.2s ease; }
+@keyframes popIn { from { opacity: 0; transform: translateX(-50%) scale(0.9); } to { opacity: 1; transform: translateX(-50%) scale(1); } }
+#rating-title { font-size: 13px; font-weight: 600; color: #1e293b; margin-bottom: 4px; }
+#rating-sub { font-size: 11px; color: #64748b; margin-bottom: 12px; }
+#stars { display: flex; justify-content: center; gap: 6px; margin-bottom: 12px; }
+.star {
+  font-size: 28px; cursor: pointer;
+  color: #e2e8f0; transition: all 0.1s;
+}
+.star.active { color: #f59e0b; }
+.star:hover { transform: scale(1.2); }
+#rating-skip {
+  font-size: 11px; color: #94a3b8; cursor: pointer;
+  text-decoration: underline;
+}
+#rating-skip:hover { color: #64748b; }
+#rating-thanks {
+  display: none; font-size: 13px; color: #22c55e; font-weight: 600;
+}
+
+/* 빠른 질문 chip */
 #chips {
-  padding: 8px 14px; display: flex; gap: 6px; flex-wrap: wrap;
+  padding: 8px 12px; display: flex; gap: 5px; flex-wrap: wrap;
   border-top: 1px solid #e2e8f0; background: #fff; flex-shrink: 0;
 }
 .chip {
-  padding: 5px 11px; font-size: 12px;
+  padding: 4px 10px; font-size: 11px;
   border: 1px solid #cbd5e1; border-radius: 20px;
   cursor: pointer; color: #475569; background: #f8fafc;
   transition: all 0.15s; white-space: nowrap;
 }
 .chip:hover { background: #dbeafe; border-color: #93c5fd; color: #1d4ed8; }
+
+/* 입력창 */
 #input-row {
-  display: flex; gap: 8px; padding: 10px 14px;
+  display: flex; gap: 8px; padding: 10px 12px;
   border-top: 1px solid #e2e8f0; background: #fff; flex-shrink: 0;
 }
 #user-input {
-  flex: 1; padding: 10px 16px; font-size: 14px;
+  flex: 1; padding: 9px 14px; font-size: 13px;
   border: 1.5px solid #e2e8f0; border-radius: 24px;
   background: #f8fafc; color: #1e293b; outline: none;
   font-family: inherit; transition: border-color 0.15s;
@@ -115,16 +175,17 @@ body {
 #user-input:focus { border-color: #1d4ed8; background: #fff; }
 #user-input::placeholder { color: #94a3b8; }
 #send-btn {
-  width: 40px; height: 40px; border-radius: 50%;
+  width: 38px; height: 38px; border-radius: 50%;
   background: linear-gradient(135deg, #1e40af, #1d4ed8);
   border: none; cursor: pointer;
   display: flex; align-items: center; justify-content: center;
-  font-size: 16px; color: #fff; flex-shrink: 0;
+  font-size: 15px; color: #fff; flex-shrink: 0;
   transition: opacity 0.15s, transform 0.1s;
 }
 #send-btn:hover { opacity: 0.85; transform: scale(1.05); }
 #send-btn:disabled { opacity: 0.4; cursor: default; transform: none; }
-/* 로딩 오버레이 */
+
+/* 로딩 */
 #loading-overlay {
   position: absolute; inset: 0;
   background: rgba(255,255,255,0.97);
@@ -140,9 +201,9 @@ body {
   animation: spin 0.8s linear infinite;
 }
 @keyframes spin { to { transform: rotate(360deg); } }
-#loading-overlay p { font-size: 14px; color: #64748b; }
-.typing-wrap { display: flex; gap: 5px; align-items: center; padding: 12px 14px; }
-.dot { width: 7px; height: 7px; border-radius: 50%; background: #94a3b8; animation: bounce 1.2s infinite; }
+#loading-overlay p { font-size: 13px; color: #64748b; }
+.typing-wrap { display: flex; gap: 5px; align-items: center; padding: 10px 14px; }
+.dot { width: 6px; height: 6px; border-radius: 50%; background: #94a3b8; animation: bounce 1.2s infinite; }
 .dot:nth-child(2) { animation-delay: 0.2s; }
 .dot:nth-child(3) { animation-delay: 0.4s; }
 @keyframes bounce { 0%,60%,100%{transform:translateY(0)} 30%{transform:translateY(-6px)} }
@@ -150,14 +211,13 @@ body {
 </head>
 <body>
 <div id="app">
-
-  <!-- FAQ 로딩 중 오버레이 -->
+  <!-- 로딩 오버레이 -->
   <div id="loading-overlay">
     <div class="spin"></div>
     <p>FAQ 데이터 불러오는 중...</p>
   </div>
 
-  <!-- Header -->
+  <!-- 헤더 -->
   <div id="header">
     <div id="logo">🎓</div>
     <div id="header-text">
@@ -170,7 +230,16 @@ body {
     </div>
   </div>
 
-  <!-- Category tabs -->
+  <!-- 언어 선택 탭 -->
+  <div id="lang-tabs">
+    <div class="lang-tab active" onclick="changeLang(this,'ko')">🇰🇷 한국어</div>
+    <div class="lang-tab" onclick="changeLang(this,'en')">🇺🇸 English</div>
+    <div class="lang-tab" onclick="changeLang(this,'vi')">🇻🇳 Tiếng Việt</div>
+    <div class="lang-tab" onclick="changeLang(this,'uz')">🇺🇿 O'zbek</div>
+    <div class="lang-tab" onclick="changeLang(this,'ne')">🇳🇵 नेपाली</div>
+  </div>
+
+  <!-- 카테고리 탭 -->
   <div id="cat-tabs">
     <div class="cat-tab active" onclick="filterCat(this,'전체')">전체</div>
     <div class="cat-tab" onclick="filterCat(this,'학생복지')">🏫 학생복지</div>
@@ -180,11 +249,11 @@ body {
     <div class="cat-tab" onclick="filterCat(this,'기타')">📋 기타</div>
   </div>
 
-  <!-- Messages -->
+  <!-- 메시지 영역 -->
   <div id="messages">
     <div class="msg bot">
       <div class="avatar bot-avatar">🤖</div>
-      <div class="bubble">안녕하세요! 서정대학교 FAQ 챗봇입니다 😊
+      <div class="bubble" id="welcome-msg">안녕하세요! 서정대학교 FAQ 챗봇입니다 😊
 궁금한 내용을 자유롭게 질문해 주세요.
 
 📌 도움드릴 수 있는 주제:
@@ -192,13 +261,26 @@ body {
 • 국가장학금 신청 및 지급
 • LMS 접속 문제 / 출석 인정
 • 국제학생 비자 / 아르바이트
-• 휴학·복학·자퇴 / 와이파이 / Office365
-
-위 탭에서 카테고리를 선택하거나 직접 질문해 주세요!</div>
+• 휴학·복학·자퇴 / 와이파이 / Office365</div>
     </div>
   </div>
 
-  <!-- Quick chips -->
+  <!-- 별점 팝업 -->
+  <div id="rating-popup">
+    <div id="rating-title">답변이 도움이 되셨나요?</div>
+    <div id="rating-sub">별점을 선택해 주세요</div>
+    <div id="stars">
+      <span class="star" onclick="submitRating(1)">★</span>
+      <span class="star" onclick="submitRating(2)">★</span>
+      <span class="star" onclick="submitRating(3)">★</span>
+      <span class="star" onclick="submitRating(4)">★</span>
+      <span class="star" onclick="submitRating(5)">★</span>
+    </div>
+    <div id="rating-thanks">감사합니다! 😊</div>
+    <div id="rating-skip" onclick="closeRating()">건너뛰기</div>
+  </div>
+
+  <!-- 빠른 질문 -->
   <div id="chips">
     <div class="chip" onclick="askChip('학생증 발급 방법')">🪪 학생증</div>
     <div class="chip" onclick="askChip('국가장학금 신청 일자')">💰 장학금</div>
@@ -208,7 +290,7 @@ body {
     <div class="chip" onclick="askChip('교내 와이파이')">📶 와이파이</div>
   </div>
 
-  <!-- Input -->
+  <!-- 입력창 -->
   <div id="input-row">
     <input id="user-input" type="text" placeholder="무엇이 궁금하신가요?" />
     <button id="send-btn" onclick="sendMsg()" title="전송">➤</button>
@@ -216,55 +298,80 @@ body {
 </div>
 
 <script>
-// ══════════════════════════════════════════════════════
-// ★ Vercel 배포 시 상대경로 그대로 사용 (수정 불필요!)
-// ══════════════════════════════════════════════════════
-const BACKEND_URL = '';
+// ══════════════════════════════════════════
+// 설정
+// ══════════════════════════════════════════
+const BACKEND_URL = '';  // Vercel 상대경로 (수정 불필요)
 
-let FAQ = [];           // faq.json에서 불러온 데이터
+// 언어별 UI 텍스트
+const UI_TEXT = {
+  ko: { placeholder: '무엇이 궁금하신가요?', welcome: '안녕하세요! 서정대학교 FAQ 챗봇입니다 😊\n궁금한 내용을 자유롭게 질문해 주세요.\n\n📌 도움드릴 수 있는 주제:\n• 학생증 발급 / 분실물 / 헤이영 앱\n• 국가장학금 신청 및 지급\n• LMS 접속 문제 / 출석 인정\n• 국제학생 비자 / 아르바이트\n• 휴학·복학·자퇴 / 와이파이 / Office365', rating_title: '답변이 도움이 되셨나요?', rating_sub: '별점을 선택해 주세요', rating_thanks: '감사합니다! 😊', rating_skip: '건너뛰기', loading: 'FAQ 데이터 불러오는 중...', error: '일시적인 오류가 발생했습니다. 잠시 후 다시 시도해 주세요.\n\n📞 학생성공처 (031-860-5013~5015)' },
+  en: { placeholder: 'What would you like to know?', welcome: 'Hello! Welcome to Seojeong University FAQ Chatbot 😊\nFeel free to ask anything!\n\n📌 Topics I can help with:\n• Student ID / Lost & Found / Hey Young App\n• Scholarship application & payment\n• LMS access issues / Attendance\n• International student visa / Part-time work\n• Leave of absence / Wi-Fi / Office365', rating_title: 'Was this answer helpful?', rating_sub: 'Please rate your experience', rating_thanks: 'Thank you! 😊', rating_skip: 'Skip', loading: 'Loading FAQ data...', error: 'A temporary error occurred. Please try again.\n\n📞 Student Success Center (031-860-5013~5015)' },
+  vi: { placeholder: 'Bạn muốn hỏi gì?', welcome: 'Xin chào! Đây là chatbot FAQ của Đại học Seojeong 😊\nHãy thoải mái đặt câu hỏi!\n\n📌 Các chủ đề có thể giúp:\n• Thẻ sinh viên / Đồ thất lạc / App Hey Young\n• Học bổng\n• Vấn đề LMS / Điểm danh\n• Visa sinh viên quốc tế / Làm thêm\n• Nghỉ học / Wi-Fi / Office365', rating_title: 'Câu trả lời có hữu ích không?', rating_sub: 'Vui lòng đánh giá', rating_thanks: 'Cảm ơn bạn! 😊', rating_skip: 'Bỏ qua', loading: 'Đang tải dữ liệu FAQ...', error: 'Đã xảy ra lỗi tạm thời. Vui lòng thử lại.\n\n📞 Trung tâm hỗ trợ sinh viên (031-860-5013~5015)' },
+  uz: { placeholder: 'Nima so\'rashni xohlaysiz?', welcome: 'Salom! Seojeong universiteti FAQ chatbotiga xush kelibsiz 😊\nIstalgan savolingizni bering!\n\n📌 Yordam bera oladigan mavzular:\n• Talaba guvohnomasi / Yo\'qolgan narsalar\n• Stipendiya\n• LMS muammolari / Davomat\n• Xalqaro talaba vizasi / Qo\'shimcha ish\n• Akademik ta\'til / Wi-Fi / Office365', rating_title: 'Javob foydali bo\'ldimi?', rating_sub: 'Iltimos, baholang', rating_thanks: 'Rahmat! 😊', rating_skip: 'O\'tkazib yuborish', loading: 'FAQ ma\'lumotlari yuklanmoqda...', error: 'Vaqtinchalik xatolik yuz berdi. Iltimos qayta urinib ko\'ring.\n\n📞 Talabalar markazi (031-860-5013~5015)' },
+  ne: { placeholder: 'तपाईं के सोध्न चाहनुहुन्छ?', welcome: 'नमस्ते! Seojeong विश्वविद्यालय FAQ च्याटबटमा स्वागत छ 😊\nकुनै पनि प्रश्न सोध्न नहिचकिचाउनुस्!\n\n📌 सहयोग गर्न सक्ने विषयहरू:\n• विद्यार्थी परिचय पत्र / हराएका सामान\n• छात्रवृत्ति\n• LMS समस्याहरू / उपस्थिति\n• अन्तर्राष्ट्रिय विद्यार्थी भिसा / अंशकालिक काम\n• बिदा / Wi-Fi / Office365', rating_title: 'के जवाफ उपयोगी थियो?', rating_sub: 'कृपया मूल्याङ्कन गर्नुस्', rating_thanks: 'धन्यवाद! 😊', rating_skip: 'छोड्नुस्', loading: 'FAQ डाटा लोड हुँदैछ...', error: 'अस्थायी त्रुटि भयो। कृपया पुनः प्रयास गर्नुस्।\n\n📞 विद्यार्थी सफलता केन्द्र (031-860-5013~5015)' },
+};
+
+// 언어별 답변 지시
+const LANG_INSTRUCTION = {
+  ko: '한국어로 답변해 주세요.',
+  en: 'Please respond in English.',
+  vi: 'Vui lòng trả lời bằng tiếng Việt.',
+  uz: 'Iltimos, o\'zbek tilida javob bering.',
+  ne: 'कृपया नेपाली भाषामा जवाफ दिनुस्।',
+};
+
+let FAQ = [];
 let currentCat = '전체';
+let currentLang = 'ko';
 let isSending = false;
 let isComposing = false;
+let lastQuestion = '';
+let lastAnswer = '';
 
-// ── faq.json 불러오기 ──
+// ── FAQ 불러오기 ──
 async function loadFAQ() {
   try {
     const res = await fetch('./faq.json');
     FAQ = await res.json();
     document.getElementById('loading-overlay').style.display = 'none';
-    console.log(`✅ FAQ ${FAQ.length}개 로드 완료`);
   } catch(e) {
     document.getElementById('loading-overlay').innerHTML =
-      '<p style="color:#ef4444;padding:20px;text-align:center;">❌ FAQ 데이터를 불러오지 못했습니다.<br>faq.json 파일을 확인해 주세요.</p>';
+      '<p style="color:#ef4444;padding:20px;text-align:center;">❌ FAQ 데이터를 불러오지 못했습니다.</p>';
   }
+}
+
+// ── 언어 변경 ──
+function changeLang(el, lang) {
+  currentLang = lang;
+  document.querySelectorAll('.lang-tab').forEach(t => t.classList.remove('active'));
+  el.classList.add('active');
+  const t = UI_TEXT[lang];
+  document.getElementById('user-input').placeholder = t.placeholder;
+  document.getElementById('rating-title').textContent = t.rating_title;
+  document.getElementById('rating-sub').textContent = t.rating_sub;
+  document.getElementById('rating-thanks').textContent = t.rating_thanks;
+  document.getElementById('rating-skip').textContent = t.rating_skip;
 }
 
 // ── 유의어 사전 ──
 const SYNONYMS = {
-  '학생증': ['학생증','id카드','신분증','카드발급'],
-  '발급': ['발급','만들','신청','받고','재발급','만드는','만들기','발행','신규'],
-  '수령': ['수령','받는','찾는','찾기','받기','어디서'],
-  '분실': ['분실','잃어','잃었','없어','잃어버','파손','망가'],
-  '분실물': ['분실물','잃어버린','잃어버','습득','찾는물건','두고온'],
-  '보관': ['보관','보관기간','기간','얼마나','언제까지'],
-  '장학금': ['장학금','장학','지원금','학비지원'],
-  '신청': ['신청','접수','어떻게','방법','절차','하는법','하려면'],
-  '지급': ['지급','언제','입금','지불','날짜','일자','기간'],
-  'lms': ['lms','강의','수업','동영상','온라인강의','이러닝','e러닝'],
-  '접속': ['접속','로그인','들어가','열리지','안됩니다','안돼','안되','오류','에러','error'],
-  '출석': ['출석','결석','인정','누락','체크','확인'],
-  '비자': ['비자','visa','체류','체류기간','연장','갱신'],
-  '국제학생': ['국제학생','외국인','유학생','외국인학생'],
-  '휴학': ['휴학','쉬고싶','잠깐쉬','학교쉬'],
-  '복학': ['복학','다시다니','돌아오','복귀'],
-  '자퇴': ['자퇴','그만다니','학교그만','탈퇴','중퇴'],
-  '와이파이': ['와이파이','wifi','인터넷','무선','네트워크'],
-  '증명서': ['증명서','발급','재학','졸업','서류'],
-  '아침밥': ['아침밥','아침식사','천원','밥','식사'],
-  '버스': ['버스','스쿨버스','셔틀','통학'],
-  '프린터': ['프린터','복사기','인쇄','출력'],
-  '연말정산': ['연말정산','교육비','세금','납입증명'],
-  '헤이영': ['헤이영','앱','어플','애플리케이션'],
+  '학생증': ['학생증','id카드','신분증','카드발급','student id','student card'],
+  '발급': ['발급','만들','신청','받고','재발급','만드는','만들기','발행','신규','apply','issue','get'],
+  '분실': ['분실','잃어','잃었','없어','잃어버','파손','망가','lost','lose','missing'],
+  '분실물': ['분실물','잃어버린','습득','두고온','lost and found'],
+  '장학금': ['장학금','장학','지원금','학비','scholarship','grant'],
+  '신청': ['신청','접수','어떻게','방법','절차','하는법','apply','how','application'],
+  '지급': ['지급','언제','입금','날짜','일자','when','payment','deposit'],
+  'lms': ['lms','강의','수업','동영상','온라인','lecture','online','video'],
+  '접속': ['접속','로그인','들어가','안됩니다','안돼','오류','에러','error','cannot','access','login'],
+  '출석': ['출석','결석','인정','누락','attendance','absent'],
+  '비자': ['비자','visa','체류','연장','extension','stay'],
+  '휴학': ['휴학','쉬고','학교쉬','leave','absence'],
+  '복학': ['복학','다시다니','돌아오','return','reinstatement'],
+  '자퇴': ['자퇴','그만다니','withdrawal','dropout'],
+  '와이파이': ['와이파이','wifi','인터넷','무선','network','wireless'],
+  '증명서': ['증명서','재학','졸업','서류','certificate','document'],
 };
 
 function expandTokens(tokens) {
@@ -291,8 +398,7 @@ function scoreItem(item, tokens) {
   let s = 0;
   for (const t of expandedTokens) {
     if (hay.includes(t)) {
-      const isOriginal = tokens.includes(t);
-      s += isOriginal ? (t.length >= 4 ? 6 : 3) : (t.length >= 4 ? 3 : 1);
+      s += tokens.includes(t) ? (t.length >= 4 ? 6 : 3) : (t.length >= 4 ? 3 : 1);
     }
   }
   if (expandedTokens.some(t => item.sub.toLowerCase().includes(t))) s += 8;
@@ -315,12 +421,12 @@ function searchFaq(query) {
   return results;
 }
 
-// ── 백엔드 서버를 통해 Claude API 호출 ──
+// ── Claude API 호출 ──
 async function callAI(userMsg, context) {
   const resp = await fetch(`${BACKEND_URL}/api/chat`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ userMsg, context }),
+    body: JSON.stringify({ userMsg, context, lang: currentLang, langInstruction: LANG_INSTRUCTION[currentLang] }),
   });
   const data = await resp.json();
   if (data.error) throw new Error(data.error);
@@ -360,20 +466,27 @@ async function sendMsg() {
   if (!q) return;
   isSending = true;
   input.value = ''; btn.disabled = true;
+  closeRating();
   addMsg(q, true);
   addTyping();
+  lastQuestion = q;
+
   const ctx = searchFaq(q);
   let answer;
   if (!ctx.length) {
-    answer = '죄송합니다, 관련 FAQ를 찾지 못했습니다.\n\n📞 학생성공처 (031-860-5013~5015)에 직접 문의해 주시면 도움받으실 수 있습니다.';
+    answer = UI_TEXT[currentLang].error;
   } else {
     try { answer = await callAI(q, ctx); }
-    catch(e) { answer = '⚠ 일시적인 오류가 발생했습니다. 잠시 후 다시 시도해 주세요.\n\n📞 학생성공처 (031-860-5013~5015)'; }
+    catch(e) { answer = UI_TEXT[currentLang].error; }
   }
   document.getElementById('typing-ind')?.remove();
   addMsg(answer, false);
+  lastAnswer = answer;
   btn.disabled = false;
   isSending = false;
+
+  // 답변 후 별점 팝업 표시 (2초 후)
+  setTimeout(() => showRating(), 2000);
 }
 
 function askChip(text) {
@@ -388,16 +501,67 @@ function filterCat(el, cat) {
   el.classList.add('active');
   const chipMap = {
     '전체':    [['🪪 학생증','학생증 발급 방법'],['💰 장학금','국가장학금 신청'],['💻 LMS','LMS 접속이 안됩니다'],['🛂 비자','비자 연장 방법'],['📝 휴학','휴학 신청 방법'],['📶 와이파이','교내 와이파이']],
-    '학생복지':[['🪪 학생증 발급','학생증 발급 방법'],['📦 분실물 보관','분실물 보관 기간'],['📱 헤이영 앱','헤이영 캠퍼스 앱 기능'],['🍚 천원의 아침밥','천원의 아침밥 운영'],['🖨 프린터','복사기 사용 방법'],['🚌 스쿨버스','스쿨버스 노선 확인']],
-    '장학':    [['1유형 지급일','국가장학금 1유형 지급'],['2유형 지급일','국가장학금 2유형 지급'],['📅 신청 일정','국가장학금 신청 일자'],['💼 근로장학금','근로장학금 지급'],['🏫 장학부서 위치','장학부서 위치 연락처']],
-    '수업학사':[['🔑 로그인 불가','LMS 로그인 안됩니다'],['💻 접속 오류','LMS 접속 안됩니다'],['📹 동영상 재생','LMS 동영상 재생 안됨'],['✅ 출석 기준','출석 인정 기준'],['📊 대시보드','대시보드 과목 안보임']],
-    '국제학생':[['💼 아르바이트','아르바이트 신청 방법'],['🛂 비자 연장','비자 연장 방법'],['🏠 체류지 변경','체류지 변경'],['📄 증명서 발급','재학증명서 발급'],['✈ 방학 출국','방학 중 출국 절차']],
+    '학생복지':[['🪪 학생증','학생증 발급 방법'],['📦 분실물','분실물 보관 기간'],['📱 헤이영','헤이영 캠퍼스 앱 기능'],['🍚 아침밥','천원의 아침밥 운영'],['🖨 프린터','복사기 사용 방법'],['🚌 버스','스쿨버스 노선 확인']],
+    '장학':    [['1유형','국가장학금 1유형 지급'],['2유형','국가장학금 2유형 지급'],['📅 신청일정','국가장학금 신청 일자'],['💼 근로장학금','근로장학금 지급'],['🏫 장학부서','장학부서 위치 연락처']],
+    '수업학사':[['🔑 로그인','LMS 로그인 안됩니다'],['💻 접속오류','LMS 접속 안됩니다'],['📹 동영상','LMS 동영상 재생 안됨'],['✅ 출석기준','출석 인정 기준'],['📊 대시보드','대시보드 과목 안보임']],
+    '국제학생':[['💼 아르바이트','아르바이트 신청 방법'],['🛂 비자연장','비자 연장 방법'],['🏠 체류지','체류지 변경'],['📄 증명서','재학증명서 발급'],['✈ 출국','방학 중 출국 절차']],
     '기타':    [['📝 휴학','휴학 신청 방법'],['🔄 복학','복학 신청 방법'],['📋 자퇴','자퇴 신청 방법'],['📶 와이파이','교내 와이파이 사용'],['💻 Office365','Office 365 이용'],['🧾 연말정산','교육비 납입증명서']],
   };
   document.getElementById('chips').innerHTML =
     (chipMap[cat] || chipMap['전체']).map(([label, q]) =>
       `<div class="chip" onclick="askChip('${q}')">${label}</div>`
     ).join('');
+}
+
+// ── 별점 팝업 ──
+function showRating() {
+  const popup = document.getElementById('rating-popup');
+  document.querySelectorAll('.star').forEach(s => s.classList.remove('active'));
+  document.getElementById('rating-thanks').style.display = 'none';
+  document.getElementById('stars').style.display = 'flex';
+  document.getElementById('rating-skip').style.display = 'block';
+  popup.classList.add('show');
+}
+
+function closeRating() {
+  document.getElementById('rating-popup').classList.remove('show');
+}
+
+function highlightStars(num) {
+  document.querySelectorAll('.star').forEach((s, i) => {
+    s.classList.toggle('active', i < num);
+  });
+}
+
+document.querySelectorAll('.star').forEach((star, idx) => {
+  star.addEventListener('mouseover', () => highlightStars(idx + 1));
+  star.addEventListener('mouseleave', () => highlightStars(0));
+});
+
+async function submitRating(score) {
+  highlightStars(score);
+  document.getElementById('stars').style.display = 'none';
+  document.getElementById('rating-skip').style.display = 'none';
+  document.getElementById('rating-thanks').style.display = 'block';
+
+  // 별점 데이터 서버로 전송
+  try {
+    await fetch(`${BACKEND_URL}/api/rating`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        question: lastQuestion,
+        answer: lastAnswer,
+        score: score,
+        lang: currentLang,
+        timestamp: new Date().toISOString(),
+      }),
+    });
+  } catch(e) {
+    console.log('별점 저장 실패:', e);
+  }
+
+  setTimeout(() => closeRating(), 2000);
 }
 
 // ── 한글 IME 버그 방지 ──
@@ -408,7 +572,6 @@ document.addEventListener('DOMContentLoaded', () => {
   input.addEventListener('keyup', (e) => {
     if (e.key === 'Enter' && !isComposing) sendMsg();
   });
-  // FAQ 데이터 로드
   loadFAQ();
 });
 </script>
